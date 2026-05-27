@@ -21,115 +21,6 @@ import {
   Info 
 } from "lucide-react";
 
-// Curated dark-themed/high-contrast professional cricket image references for each shot
-const SHOT_IMAGES: Record<string, string> = {
-  "cover-drive": "https://images.unsplash.com/photo-1540747737956-37872404428a?auto=format&fit=crop&q=80&w=800",
-  "inside-out": "https://images.unsplash.com/photo-1540747737956-37872404428a?auto=format&fit=crop&q=80&w=800",
-  "chip-shot": "https://images.unsplash.com/photo-1540747737956-37872404428a?auto=format&fit=crop&q=80&w=800",
-  "lofted-drive": "https://images.unsplash.com/photo-1540747737956-37872404428a?auto=format&fit=crop&q=80&w=800",
-  "lofted-shot": "https://images.unsplash.com/photo-1540747737956-37872404428a?auto=format&fit=crop&q=80&w=800",
-  
-  "straight-drive": "https://images.unsplash.com/photo-1593341646782-e0b4c6c8e36d?auto=format&fit=crop&q=80&w=800",
-  "straight-hit": "https://images.unsplash.com/photo-1593341646782-e0b4c6c8e36d?auto=format&fit=crop&q=80&w=800",
-  "push-shot": "https://images.unsplash.com/photo-1593341646782-e0b4c6c8e36d?auto=format&fit=crop&q=80&w=800",
-  "flick": "https://images.unsplash.com/photo-1593341646782-e0b4c6c8e36d?auto=format&fit=crop&q=80&w=800",
-  "glance": "https://images.unsplash.com/photo-1593341646782-e0b4c6c8e36d?auto=format&fit=crop&q=80&w=800",
-  
-  "pull-shot": "https://images.unsplash.com/photo-1531415080261-011a7c3143b0?auto=format&fit=crop&q=80&w=800",
-  "pickup": "https://images.unsplash.com/photo-1531415080261-011a7c3143b0?auto=format&fit=crop&q=80&w=800",
-  "slog-sweep": "https://images.unsplash.com/photo-1531415080261-011a7c3143b0?auto=format&fit=crop&q=80&w=800",
-  "slog-shot": "https://images.unsplash.com/photo-1531415080261-011a7c3143b0?auto=format&fit=crop&q=80&w=800",
-  "helicopter-shot": "https://images.unsplash.com/photo-1531415080261-011a7c3143b0?auto=format&fit=crop&q=80&w=800",
-  "deep-inside": "https://images.unsplash.com/photo-1531415080261-011a7c3143b0?auto=format&fit=crop&q=80&w=800",
-  
-  "sweep-shot": "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=800",
-  "paddle-sweep": "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=800",
-  "reverse-sweep": "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=800",
-  
-  "scoop-shot": "https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?auto=format&fit=crop&q=80&w=800",
-  "shuffle-oo": "https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?auto=format&fit=crop&q=80&w=800",
-  "shuffle-ol": "https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?auto=format&fit=crop&q=80&w=800",
-  
-  "square-cut": "https://images.unsplash.com/photo-1624193757636-b6058097d6be?auto=format&fit=crop&q=80&w=800",
-  "steer-shot": "https://images.unsplash.com/photo-1624193757636-b6058097d6be?auto=format&fit=crop&q=80&w=800",
-  "punch-shot": "https://images.unsplash.com/photo-1624193757636-b6058097d6be?auto=format&fit=crop&q=80&w=800",
-};
-
-const DEFAULT_SHOT_IMAGE = "https://images.unsplash.com/photo-1540747737956-37872404428a?auto=format&fit=crop&q=80&w=800";
-
-const getBatFlowLabel = (shot: CricketShot) => {
-  if (shot.category === "unorthodox") return "VERTICAL-DIAGONAL REVERSE";
-  if (["pull-shot", "square-cut", "slog-shot"].includes(shot.id)) return "LATERAL HORIZONTAL DRIVE";
-  return "STRICT PLANAR VERTICAL";
-};
-
-const getLeverageLabel = (shot: CricketShot) => {
-  if (shot.category === "unorthodox") return "BODY-WEIGHT COLLAPSE/KNEEL";
-  if (shot.category === "front-foot") return "FRONT-FOOT WEIGHT TRANSFER";
-  return "BACK-FOOT SPRING PUSH";
-};
-
-// Generates dynamic glowing vector trajectory paths depending on the exact physics class of each shot
-const renderBallTrajectoryLine = (id: string) => {
-  if (["cover-drive", "lofted-drive", "inside-out", "lofted-shot", "chip-shot", "deep-inside"].includes(id)) {
-    return (
-      <>
-        {/* Incoming ball trajectory */}
-        <path d="M 50,40 Q 200,80 320,135" fill="none" stroke="#64748B" strokeWidth="2" strokeDasharray="4 4" className="opacity-40" />
-        {/* Post-impact rocket drive soaring offside */}
-        <path d="M 320,135 C 380,120 500,75 750,45" fill="none" stroke="#C5A059" strokeWidth="3" className="drop-shadow-[0_0_8px_rgba(197,160,89,0.9)] animate-pulse" />
-        <circle cx="320" cy="135" r="4.5" fill="#C5A059" />
-        <circle cx="750" cy="45" r="5" fill="#C5A059" />
-      </>
-    );
-  }
-  if (["straight-drive", "straight-hit", "push-shot", "flick", "pickup"].includes(id)) {
-    return (
-      <>
-        {/* Incoming straight */}
-        <path d="M 50,40 Q 180,90 310,140" fill="none" stroke="#64748B" strokeWidth="2" strokeDasharray="4 4" className="opacity-40" />
-        {/* Clean linear driver down the ground */}
-        <path d="M 310,140 C 370,140 540,110 780,75" fill="none" stroke="#3B82F6" strokeWidth="3" className="drop-shadow-[0_0_8px_rgba(59,130,246,0.9)]" />
-        <circle cx="310" cy="140" r="4.5" fill="#3B82F6" />
-        <circle cx="780" cy="75" r="5" fill="#3B82F6" />
-      </>
-    );
-  }
-  if (["pull-shot", "slog-shot", "helicopter-shot"].includes(id)) {
-    return (
-      <>
-        {/* Short bouncer trajectory */}
-        <path d="M 50,50 Q 150,85 240,105" fill="none" stroke="#64748B" strokeWidth="2" strokeDasharray="4 4" className="opacity-40" />
-        {/* Cross-bat power dynamic launch to legside */}
-        <path d="M 240,105 C 320,95 480,115 720,160" fill="none" stroke="#EF4444" strokeWidth="3" className="drop-shadow-[0_0_8px_rgba(239,68,68,0.9)]" />
-        <circle cx="240" cy="105" r="4.5" fill="#EF4444" />
-        <circle cx="720" cy="160" r="5" fill="#EF4444" />
-      </>
-    );
-  }
-  if (["square-cut", "steer-shot", "punch-shot", "glance", "shuffle-ol"].includes(id)) {
-    return (
-      <>
-        <path d="M 50,40 Q 220,100 340,115" fill="none" stroke="#64748B" strokeWidth="2" strokeDasharray="4 4" className="opacity-40" />
-        {/* Deflected cut slicing outward to gully/slip */}
-        <path d="M 340,115 Q 460,110 740,145" fill="none" stroke="#10B981" strokeWidth="3" className="drop-shadow-[0_0_8px_rgba(16,185,129,0.9)]" />
-        <circle cx="340" cy="115" r="4.5" fill="#10B981" />
-        <circle cx="740" cy="145" r="5" fill="#10B981" />
-      </>
-    );
-  }
-  // Default: Sweeps, scoops, and shuffles (paddle-sweep, reverse-sweep, scoop-shot, slog-sweep, shuffle-oo)
-  return (
-    <>
-      <path d="M 50,60 Q 180,100 290,145" fill="none" stroke="#64748B" strokeWidth="2" strokeDasharray="4 4" className="opacity-40" />
-      {/* Delicate sweep glide behind keeper */}
-      <path d="M 290,145 C 340,135 440,80 520,35" fill="none" stroke="#A855F7" strokeWidth="3" className="drop-shadow-[0_0_8px_rgba(168,85,247,0.9)]" />
-      <circle cx="290" cy="145" r="4.5" fill="#A855F7" />
-      <circle cx="520" cy="35" r="5" fill="#A855F7" />
-    </>
-  );
-};
-
 export default function App() {
   const [selectedShotId, setSelectedShotId] = useState<string>("cover-drive");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -370,17 +261,7 @@ export default function App() {
                         : "bg-transparent"
                     }`} />
 
-                    {/* Highly-aligned technique thumbnail */}
-                    <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 relative shrink-0 mr-3 bg-[#1A2233]">
-                      <img
-                        src={SHOT_IMAGES[shot.id] || DEFAULT_SHOT_IMAGE}
-                        alt={shot.name}
-                        className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110 brightness-[0.7] group-hover:brightness-[0.9]"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-
-                    <div className="flex-1 min-w-0 pr-2">
+                    <div className="flex-1 min-w-0 pr-2 pl-1">
                       <div className="flex items-center gap-1.5 mb-1.5">
                         <span className={`text-[9px] font-mono font-bold px-2 py-0.5 border rounded-md ${getBadgeColors(shot.category)}`}>
                           {shot.categoryLabel.split(" ")[0]}
@@ -462,78 +343,6 @@ export default function App() {
               <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-6 font-sans">
                 {selectedShot.description}
               </p>
-
-              {/* WIDESCREEN DYNAMIC PICTURE PLAYBOOK ILLUSTRATOR */}
-              <div className="w-full aspect-[21/9] sm:aspect-[16/6] md:aspect-[16/5.2] lg:aspect-[16/4.8] rounded-2xl overflow-hidden mb-7 relative border border-white/10 shadow-lg group select-none">
-                {/* Sports Photography Backdrop */}
-                <img
-                  src={SHOT_IMAGES[selectedShot.id] || DEFAULT_SHOT_IMAGE}
-                  alt={selectedShot.name}
-                  className="w-full h-full object-cover grayscale brightness-[0.32] contrast-[1.15] transition-all duration-700 group-hover:scale-[1.02] group-hover:brightness-[0.42] group-hover:grayscale-[0.15]"
-                  referrerPolicy="no-referrer"
-                />
-                
-                {/* Advanced Darkening & Golden Vignette Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0D14] via-transparent to-black/30 pointer-events-none" />
-                <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black/55 to-transparent pointer-events-none" />
-                
-                {/* Technique HUD Canvas Wrapper */}
-                <div className="absolute inset-0 p-4 md:p-5 flex flex-col justify-between pointer-events-none transition-all duration-300">
-                  {/* Top: Metadata labels */}
-                  <div className="flex justify-between items-start">
-                    <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest bg-black/60 backdrop-blur-md px-2 py-1 rounded-md border border-white/5">
-                      📷 STADIUM HIGH-SPEED • 1/8000s • ISO 400
-                    </span>
-                    <span className="text-[9px] font-mono text-[#C5A059] font-bold uppercase tracking-widest bg-[#C5A059]/10 backdrop-blur-md px-2.5 py-1 rounded-md border border-[#C5A059]/20 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse" /> TARGET INTERCEPT
-                    </span>
-                  </div>
-
-                  {/* Middle: Custom Ball Trajectory vector trails overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <svg className="w-full h-full absolute inset-0" viewBox="0 0 800 200" preserveAspectRatio="none">
-                      {renderBallTrajectoryLine(selectedShot.id)}
-                    </svg>
-                  </div>
-
-                  {/* Micro-interactive coaching point nodes that highlight on group-hover */}
-                  <div className="absolute top-[32%] left-[22%] opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/85 backdrop-blur-md border border-[#C5A059]/30 text-[#C5A059] text-[9px] font-mono px-2 py-0.5 rounded-md shadow-md">
-                    🎯 HEAD: STEADY
-                  </div>
-                  <div className="absolute top-[52%] left-[55%] opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/85 backdrop-blur-md border border-[#C5A059]/30 text-[#C5A059] text-[9px] font-mono px-2 py-0.5 rounded-md shadow-md">
-                    ⚖️ WEIGHT: BALANCED
-                  </div>
-                  <div className="absolute top-[68%] left-[42%] opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/85 backdrop-blur-md border border-[#C5A059]/30 text-[#C5A059] text-[9px] font-mono px-2 py-0.5 rounded-md shadow-md">
-                    🎨 GRIP: ELITE LOCK
-                  </div>
-
-                  {/* Bottom: Instructional Subtext & Technical details */}
-                  <div className="flex items-end justify-between">
-                    <div className="max-w-[70%]">
-                      <span className="text-[10px] md:text-xs font-serif italic text-slate-200 block drop-shadow-sm">
-                        "Unlocking correct contact mechanics through visual alignment."
-                      </span>
-                      <div className="flex flex-wrap gap-2 mt-2 text-[8px] md:text-[9px] font-mono text-slate-400">
-                        <span className="px-1.5 py-0.5 bg-black/40 rounded border border-white/5">
-                          BAT SWING: {getBatFlowLabel(selectedShot)}
-                        </span>
-                        <span className="px-1.5 py-0.5 bg-black/40 rounded border border-white/5">
-                          LEVERAGE: {getLeverageLabel(selectedShot)}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <div className="text-right hidden sm:block">
-                      <span className="block text-[10px] font-mono font-bold text-[#C5A059] tracking-wider">
-                        IDEAL BALL POSITION
-                      </span>
-                      <span className="text-[9px] text-slate-400 font-mono">
-                        {selectedShot.idealBallTypes[0]}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               {/* Specifications / Metric Meters */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 border-t border-white/10 pt-5">
